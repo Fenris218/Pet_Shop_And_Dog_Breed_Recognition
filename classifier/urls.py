@@ -2,6 +2,7 @@ print(">>> classifier.urls LOADED <<<")
 from django.contrib import admin
 from django.urls import path
 from . import views
+from . import api_views
 
 urlpatterns = [
     # ==================== HOME & BROWSING ====================
@@ -32,6 +33,15 @@ urlpatterns = [
     path("upload/", views.upload_view, name="upload"),
     path("result/<int:job_id>/", views.result_view, name="result"),
     path("job-status/<int:job_id>/", views.job_status_view, name="job_status"),
-    path("history/", views.history_view, name="history")
+    path("history/", views.history_view, name="history"),
+    
+    # ==================== CHATBOT API ====================
+    path("api/chatbot/message/", api_views.chatbot_message_api, name="chatbot_message"),
+    
+    # ==================== REST API ====================
+    path("api/breeds/", api_views.breeds_list_api, name="api_breeds_list"),
+    path("api/breeds/<int:breed_id>/", api_views.breed_detail_api, name="api_breed_detail"),
+    path("api/dogs/", api_views.dogs_list_api, name="api_dogs_list"),
+    path("api/dogs/<int:dog_id>/", api_views.dog_detail_api, name="api_dog_detail"),
 ]
 
