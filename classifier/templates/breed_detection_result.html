@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load currency_filters %}
 
 {% block title %}Kết Quả Nhận Diện - DogShop{% endblock %}
 
@@ -29,7 +30,14 @@
     <div class="grid md:grid-cols-2">
       <!-- Image -->
       <div class="bg-slate-50 flex items-center justify-center p-6">
+        {% if job.image %}
         <img src="{{ job.image.url }}" alt="Uploaded" class="rounded-2xl max-h-80 object-contain shadow-sm" />
+        {% else %}
+        <div class="w-full h-80 rounded-2xl border border-dashed border-slate-300 bg-white flex flex-col items-center justify-center text-slate-500">
+          <i class="fa-regular fa-image text-4xl mb-3"></i>
+          <p class="text-sm">Ảnh đã được xóa để tối ưu dung lượng lưu trữ.</p>
+        </div>
+        {% endif %}
       </div>
       <!-- Info -->
       <div class="p-8 flex flex-col justify-center">
@@ -88,7 +96,7 @@
         {% endif %}
         <div class="p-4">
           <div class="font-bold text-slate-800">{{ dog.name }}</div>
-          <div class="text-amber-600 font-semibold text-sm">{{ dog.price|floatformat:0 }} đ</div>
+          <div class="text-amber-600 font-semibold text-sm">{{ dog.price|vnd_format }} đ</div>
         </div>
       </a>
       {% endfor %}

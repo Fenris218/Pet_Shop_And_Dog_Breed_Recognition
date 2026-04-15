@@ -1,4 +1,5 @@
 {% load static %}
+{% load currency_filters %}
 <!DOCTYPE html>
 <html lang="vi" class="scroll-smooth">
 <head>
@@ -340,7 +341,7 @@
             </div>
 
             <div class="text-xl font-extrabold text-amber-600 mt-auto">
-              {{ dog.price|floatformat:0 }} <span class="text-sm font-semibold text-slate-400">₫</span>
+              {{ dog.price|vnd_format }} <span class="text-sm font-semibold text-slate-400">₫</span>
             </div>
 
             <div class="flex gap-2 mt-1">

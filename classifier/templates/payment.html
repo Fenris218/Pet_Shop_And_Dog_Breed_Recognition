@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load currency_filters %}
 
 {% block title %}Thanh Toán Thẻ - DogShop{% endblock %}
 
@@ -37,7 +38,7 @@
             </div>
             <div class="border-t border-amber-200 pt-2 flex justify-between">
               <span class="font-bold text-slate-800">Tổng Tiền</span>
-              <span class="font-extrabold text-amber-600 text-lg">{{ order.total_price|floatformat:0 }} ₫</span>
+              <span class="font-extrabold text-amber-600 text-lg">{{ order.total_price|vnd_format }} ₫</span>
             </div>
           </div>
         </div>
@@ -79,7 +80,7 @@
               class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-sm font-semibold uppercase tracking-widest focus:outline-none focus:ring-2 focus:ring-amber-400 transition" />
           </div>
           <button type="submit" class="w-full flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-600 text-white font-bold py-4 rounded-xl transition shadow-md text-base mt-2">
-            <i class="fa-solid fa-lock"></i> Thanh Toán {{ order.total_price|floatformat:0 }} ₫
+            <i class="fa-solid fa-lock"></i> Thanh Toán {{ order.total_price|vnd_format }} ₫
           </button>
         </form>
 

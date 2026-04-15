@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load currency_filters %}
 
 {% block title %}{{ dog.name }} - DogShop{% endblock %}
 
@@ -63,7 +64,7 @@
       </span>
 
       <div class="flex items-baseline gap-2">
-        <span class="text-4xl font-black text-amber-600">{{ dog.price|floatformat:0 }}</span>
+        <span class="text-4xl font-black text-amber-600">{{ dog.price|vnd_format }}</span>
         <span class="text-xl font-bold text-amber-400">₫</span>
       </div>
 
@@ -128,7 +129,7 @@
       <div class="font-bold text-slate-900">{{ rd.name }}</div>
       <div class="text-xs text-slate-400 mb-2">{{ rd.breed.name }} &bull; {{ rd.age_months }} tháng</div>
       <div class="flex items-center justify-between">
-        <span class="font-extrabold text-amber-600">{{ rd.price|floatformat:0 }} ₫</span>
+        <span class="font-extrabold text-amber-600">{{ rd.price|vnd_format }} ₫</span>
         <a href="{% url 'dog_detail' rd.id %}" class="inline-flex items-center gap-1 bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold px-3 py-1.5 rounded-xl transition">Chi Tiết <i class="fa-solid fa-arrow-right text-[10px]"></i></a>
       </div>
     </div>

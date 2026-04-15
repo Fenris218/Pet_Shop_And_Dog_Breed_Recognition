@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load currency_filters %}
 
 {% block title %}Đặt Hàng Thành Công - DogShop{% endblock %}
 
@@ -34,13 +35,13 @@
           <div class="font-bold text-slate-900">{% if item.dog %}{{ item.dog.name }}{% else %}Sản phẩm đã bị xóa{% endif %}</div>
           {% if item.dog %}<div class="text-amber-600 text-sm">{{ item.dog.breed.name }}</div>{% endif %}
         </div>
-        <div class="font-extrabold text-amber-600 shrink-0">{{ item.price|floatformat:0 }} ₫</div>
+        <div class="font-extrabold text-amber-600 shrink-0">{{ item.price|vnd_format }} ₫</div>
       </div>
       {% endfor %}
     </div>
     <div class="px-6 py-4 bg-slate-50 border-t border-slate-100 flex justify-between">
       <span class="font-bold text-slate-900">Tổng Cộng</span>
-      <span class="text-xl font-extrabold text-amber-600">{{ order.total_price|floatformat:0 }} ₫</span>
+      <span class="text-xl font-extrabold text-amber-600">{{ order.total_price|vnd_format }} ₫</span>
     </div>
   </div>
 

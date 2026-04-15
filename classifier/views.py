@@ -176,6 +176,25 @@ def _run_prediction_job(job_id):
         close_old_connections()
 
 
+def _cleanup_job_image(job):
+    """Xóa file ảnh upload của job để tiết kiệm dung lượng."""
+    if not job.image:
+        return
+
+    image_name = job.image.name
+    storage = job.image.storage
+
+    try:
+        if image_name and storage.exists(image_name):
+            storage.delete(image_name)
+    except Exception:
+        # Không chặn luồng hiển thị kết quả nếu việc xóa file gặp lỗi.
+        return
+
+    job.image = ""
+    job.save(update_fields=["image", "updated_at"])
+
+
 # ==================== E-COMMERCE VIEWS ====================
 
 def home_view(request):
@@ -506,6 +525,10 @@ def detect_breed_view(request):
 def breed_detection_result_view(request, job_id):
     """Hiển thị kết quả nhận diện và những chó cùng giống"""
     job = get_object_or_404(PredictionJob, id=job_id, user=request.user)
+
+    # Sau khi có kết quả, dọn file upload để giảm tài nguyên lưu trữ.
+    if job.status in {"done", "failed"} and job.image:
+        _cleanup_job_image(job)
     
     # Nếu nhận diện thành công, tìm kiếm giống chó tương ứng
     related_dogs = None

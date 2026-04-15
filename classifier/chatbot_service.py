@@ -190,7 +190,7 @@ class ChatbotService:
     def _handle_help(self) -> dict:
         return {
             'response': (
-                "📖 Hướng dẫn sử dụng chatbot:\n\n"
+                "Hướng dẫn sử dụng chatbot:\n\n"
                 "Bạn có thể hỏi:\n"
                 "• \"Danh sách các giống chó\" - Xem tất cả giống\n"
                 "• \"Chó nào đang bán?\" - Xem danh sách chó\n"
@@ -198,7 +198,7 @@ class ChatbotService:
                 "• \"Golden Retriever giá bao nhiêu?\" - Hỏi giá\n"
                 "• \"Đặc điểm của Husky\" - Xem tính cách\n"
                 "• \"Có chó Corgi không?\" - Kiểm tra còn hàng\n\n"
-                "💡 Gõ tên chó hoặc giống chó để xem chi tiết!"
+                "Gõ tên chó hoặc giống chó để xem chi tiết!"
             ),
             'intent': 'help',
             'data': None
@@ -223,12 +223,12 @@ class ChatbotService:
                 'data': []
             }
         
-        response = "🐕 Các giống chó tại DogShop:\n\n"
+        response = "Các giống chó tại DogShop:\n\n"
         for b in breeds_with_count:
             status = f"({b['available_count']} chó đang bán)" if b['available_count'] > 0 else "(Hết hàng)"
             response += f"• {b['name']} {status}\n"
         
-        response += f"\n📌 Tổng cộng: {len(breeds_with_count)} giống chó"
+        response += f"\nTổng cộng: {len(breeds_with_count)} giống chó"
         
         return {
             'response': response,
@@ -248,27 +248,27 @@ class ChatbotService:
         if not dogs.exists():
             if breed:
                 return {
-                    'response': f"❌ Hiện không có {breed.name} nào đang bán.",
+                    'response': f"Hiện không có {breed.name} nào đang bán.",
                     'intent': 'list_dogs',
                     'data': {'breed_name': breed.name, 'dogs': []}
                 }
             return {
-                'response': "❌ Hiện không có chó nào đang bán.",
+                'response': "Hiện không có chó nào đang bán.",
                 'intent': 'list_dogs',
                 'data': {'dogs': []}
             }
         
         if breed:
-            response = f"🐕 Danh sách {breed.name} đang bán ({dogs.count()} con):\n\n"
+            response = f"Danh sách {breed.name} đang bán ({dogs.count()} con):\n\n"
         else:
-            response = f"🐕 Danh sách chó đang bán ({dogs.count()} con):\n\n"
+            response = f"Danh sách chó đang bán ({dogs.count()} con):\n\n"
         
         dogs_data = []
         for i, dog in enumerate(dogs[:10], 1):
             age_str = f"{dog.age_months} tháng" if dog.age_months < 12 else f"{dog.age_months // 12} tuổi {dog.age_months % 12} tháng"
             response += f"{i}. **{dog.name}** - {dog.breed.name}\n"
-            response += f"   🎂 {age_str} | 🎨 {dog.color}\n"
-            response += f"   💰 {self._format_price(dog.price)}\n\n"
+            response += f"   {age_str} | {dog.color}\n"
+            response += f"   {self._format_price(dog.price)}\n\n"
             
             dogs_data.append({
                 'id': dog.id,
@@ -283,7 +283,7 @@ class ChatbotService:
         if dogs.count() > 10:
             response += f"... và {dogs.count() - 10} chó khác\n"
         
-        response += "\n💡 Gõ tên chó để xem chi tiết. VD: \"Thông tin về Lucky\""
+        response += "\nGõ tên chó để xem chi tiết. VD: \"Thông tin về Lucky\""
         
         return {
             'response': response,
@@ -302,8 +302,8 @@ class ChatbotService:
         if not dog:
             return {
                 'response': (
-                    "🤔 Không tìm thấy chó với tên này.\n\n"
-                    "💡 Gõ \"Xem chó đang bán\" để xem danh sách."
+                    "Không tìm thấy chó với tên này.\n\n"
+                    "Gõ \"Xem chó đang bán\" để xem danh sách."
                 ),
                 'intent': 'dog_info',
                 'data': None
@@ -311,23 +311,23 @@ class ChatbotService:
         
         age_str = f"{dog.age_months} tháng" if dog.age_months < 12 else f"{dog.age_months // 12} tuổi {dog.age_months % 12} tháng"
         
-        response = f"🐕 Thông tin chi tiết về {dog.name}:\n\n"
-        response += f"📋 **Giống:** {dog.breed.name}\n"
-        response += f"🎂 **Tuổi:** {age_str}\n"
-        response += f"🎨 **Màu sắc:** {dog.color}\n"
-        response += f"💰 **Giá:** {self._format_price(dog.price)}\n"
+        response = f" Thông tin chi tiết về {dog.name}:\n\n"
+        response += f" **Giống:** {dog.breed.name}\n"
+        response += f" **Tuổi:** {age_str}\n"
+        response += f" **Màu sắc:** {dog.color}\n"
+        response += f" **Giá:** {self._format_price(dog.price)}\n"
         
         if dog.description:
-            response += f"\n📝 **Mô tả:** {dog.description}\n"
+            response += f"\n **Mô tả:** {dog.description}\n"
         
         # Thêm thông tin giống chó
         if dog.breed.characteristics:
-            response += f"\n✨ **Đặc điểm giống {dog.breed.name}:**\n{dog.breed.characteristics}\n"
+            response += f"\n **Đặc điểm giống {dog.breed.name}:**\n{dog.breed.characteristics}\n"
         
         if dog.breed.origin:
-            response += f"\n🌍 **Xuất xứ:** {dog.breed.origin}\n"
+            response += f"\n **Xuất xứ:** {dog.breed.origin}\n"
         
-        response += f"\n🛒 Truy cập website để đặt mua {dog.name}!"
+        response += f"\n Truy cập website để đặt mua {dog.name}!"
         
         return {
             'response': response,
@@ -363,24 +363,24 @@ class ChatbotService:
             avg_price=Avg('price')
         )
         
-        response = f"🐕 Thông tin về {breed.name}:\n\n"
+        response = f" Thông tin về {breed.name}:\n\n"
         
         if breed.description:
-            response += f"📝 Mô tả: {breed.description}\n\n"
+            response += f" Mô tả: {breed.description}\n\n"
         
         if breed.characteristics:
-            response += f"✨ Đặc điểm: {breed.characteristics}\n\n"
+            response += f" Đặc điểm: {breed.characteristics}\n\n"
         
         if breed.origin:
-            response += f"🌍 Xuất xứ: {breed.origin}\n\n"
+            response += f" Xuất xứ: {breed.origin}\n\n"
         
         if dogs.exists():
-            response += f"💰 Giá: {self._format_price(price_info['min_price'])}"
+            response += f" Giá: {self._format_price(price_info['min_price'])}"
             if price_info['min_price'] != price_info['max_price']:
                 response += f" - {self._format_price(price_info['max_price'])}"
-            response += f"\n🛒 Hiện có: {dogs.count()} chó đang bán"
+            response += f"\n Hiện có: {dogs.count()} chó đang bán"
         else:
-            response += "❌ Hiện không có chó giống này đang bán"
+            response += " Hiện không có chó giống này đang bán"
         
         return {
             'response': response,
@@ -412,19 +412,19 @@ class ChatbotService:
                 )
                 
                 if price_info['min_price'] == price_info['max_price']:
-                    response = f"💰 Giá {breed.name}: {self._format_price(price_info['min_price'])}"
+                    response = f"Giá {breed.name}: {self._format_price(price_info['min_price'])}"
                 else:
                     response = (
-                        f"💰 Giá {breed.name}:\n"
+                        f"Giá {breed.name}:\n"
                         f"• Thấp nhất: {self._format_price(price_info['min_price'])}\n"
                         f"• Cao nhất: {self._format_price(price_info['max_price'])}\n\n"
-                        f"🛒 Hiện có {dogs.count()} chó đang bán"
+                        f"Hiện có {dogs.count()} chó đang bán"
                     )
                 
                 # Liệt kê một vài con cụ thể
                 dog_list = dogs[:3]
                 if dog_list:
-                    response += "\n\n📋 Chi tiết:\n"
+                    response += "\n\n Chi tiết:\n"
                     for dog in dog_list:
                         response += f"• {dog.name} ({dog.age_months} tháng tuổi): {self._format_price(dog.price)}\n"
                 
@@ -440,7 +440,7 @@ class ChatbotService:
                 }
             else:
                 return {
-                    'response': f"❌ Hiện không có {breed.name} đang bán. Vui lòng quay lại sau!",
+                    'response': f" Hiện không có {breed.name} đang bán. Vui lòng quay lại sau!",
                     'intent': 'price_query',
                     'data': {'breed_name': breed.name, 'available': False}
                 }
@@ -454,11 +454,11 @@ class ChatbotService:
             )
             return {
                 'response': (
-                    f"💰 Giá chó tại DogShop:\n"
+                    f" Giá chó tại DogShop:\n"
                     f"• Thấp nhất: {self._format_price(price_info['min_price'])}\n"
                     f"• Cao nhất: {self._format_price(price_info['max_price'])}\n\n"
-                    f"🛒 Hiện có {all_dogs.count()} chó đang bán.\n\n"
-                    f"💡 Để biết giá cụ thể, hãy hỏi theo giống chó. Ví dụ: \"Giá Golden Retriever\""
+                    f" Hiện có {all_dogs.count()} chó đang bán.\n\n"
+                    f" Để biết giá cụ thể, hãy hỏi theo giống chó. Ví dụ: \"Giá Golden Retriever\""
                 ),
                 'intent': 'price_query',
                 'data': {
@@ -469,7 +469,7 @@ class ChatbotService:
             }
         
         return {
-            'response': "❌ Hiện không có chó nào đang bán.",
+            'response': " Hiện không có chó nào đang bán.",
             'intent': 'price_query',
             'data': None
         }
@@ -480,7 +480,7 @@ class ChatbotService:
         if breed:
             if breed.characteristics:
                 return {
-                    'response': f"✨ Đặc điểm của {breed.name}:\n\n{breed.characteristics}",
+                    'response': f" Đặc điểm của {breed.name}:\n\n{breed.characteristics}",
                     'intent': 'characteristic',
                     'data': {
                         'breed_name': breed.name,
@@ -489,15 +489,15 @@ class ChatbotService:
                 }
             else:
                 return {
-                    'response': f"📝 Chưa có thông tin đặc điểm chi tiết về {breed.name}.",
+                    'response': f" Chưa có thông tin đặc điểm chi tiết về {breed.name}.",
                     'intent': 'characteristic',
                     'data': {'breed_name': breed.name}
                 }
         
         return {
             'response': (
-                "🤔 Bạn muốn biết đặc điểm của giống chó nào?\n\n"
-                "💡 Ví dụ: \"Đặc điểm của Husky\" hoặc \"Golden Retriever như thế nào?\""
+                " Bạn muốn biết đặc điểm của giống chó nào?\n\n"
+                " Ví dụ: \"Đặc điểm của Husky\" hoặc \"Golden Retriever như thế nào?\""
             ),
             'intent': 'characteristic',
             'data': None
@@ -509,7 +509,7 @@ class ChatbotService:
         if breed:
             if breed.origin:
                 return {
-                    'response': f"🌍 Xuất xứ của {breed.name}: {breed.origin}",
+                    'response': f" Xuất xứ của {breed.name}: {breed.origin}",
                     'intent': 'origin',
                     'data': {
                         'breed_name': breed.name,
@@ -518,15 +518,15 @@ class ChatbotService:
                 }
             else:
                 return {
-                    'response': f"📝 Chưa có thông tin xuất xứ về {breed.name}.",
+                    'response': f" Chưa có thông tin xuất xứ về {breed.name}.",
                     'intent': 'origin',
                     'data': {'breed_name': breed.name}
                 }
         
         return {
             'response': (
-                "🤔 Bạn muốn biết xuất xứ của giống chó nào?\n\n"
-                "💡 Ví dụ: \"Poodle xuất xứ từ đâu?\" hoặc \"Nguồn gốc của Corgi\""
+                " Bạn muốn biết xuất xứ của giống chó nào?\n\n"
+                " Ví dụ: \"Poodle xuất xứ từ đâu?\" hoặc \"Nguồn gốc của Corgi\""
             ),
             'intent': 'origin',
             'data': None
@@ -547,7 +547,7 @@ class ChatbotService:
                 if dogs.count() > 5:
                     response += f"\n... và {dogs.count() - 5} chó khác"
                 
-                response += "\n\n💡 Gõ tên chó để xem chi tiết!"
+                response += "\n\n Gõ tên chó để xem chi tiết!"
                 
                 return {
                     'response': response,
@@ -562,7 +562,7 @@ class ChatbotService:
             else:
                 # Breed exists but no dogs available
                 return {
-                    'response': f"❌ Rất tiếc, hiện không có {breed.name} đang bán. Hãy quay lại sau nhé!",
+                    'response': f" Rất tiếc, hiện không có {breed.name} đang bán. Hãy quay lại sau nhé!",
                     'intent': 'availability',
                     'data': {'breed_name': breed.name, 'available': False}
                 }
@@ -581,23 +581,23 @@ class ChatbotService:
             if breeds_with_dogs.exists():
                 breed_list = ", ".join([b.name for b in breeds_with_dogs[:8]])
                 response = (
-                    f"❌ Rất tiếc, hiện không có giống \"{asked_breed}\" trong cửa hàng.\n\n"
-                    f"🛒 Các giống đang bán ({total_dogs} chó):\n{breed_list}\n\n"
-                    f"💡 Bạn có muốn xem giống khác không?"
+                    f" Rất tiếc, hiện không có giống \"{asked_breed}\" trong cửa hàng.\n\n"
+                    f" Các giống đang bán ({total_dogs} chó):\n{breed_list}\n\n"
+                    f" Bạn có muốn xem giống khác không?"
                 )
             else:
-                response = f"❌ Hiện không có giống \"{asked_breed}\" và cũng không có chó nào đang bán."
+                response = f" Hiện không có giống \"{asked_breed}\" và cũng không có chó nào đang bán."
         else:
             # User hỏi chung
             if breeds_with_dogs.exists():
                 breed_list = ", ".join([b.name for b in breeds_with_dogs[:10]])
                 response = (
-                    f"🛒 DogShop hiện có {total_dogs} chó đang bán:\n\n"
-                    f"📋 Các giống: {breed_list}\n\n"
-                    f"💡 Hỏi cụ thể: \"Có chó {breeds_with_dogs.first().name} không?\""
+                    f" DogShop hiện có {total_dogs} chó đang bán:\n\n"
+                    f" Các giống: {breed_list}\n\n"
+                    f" Hỏi cụ thể: \"Có chó {breeds_with_dogs.first().name} không?\""
                 )
             else:
-                response = "❌ Hiện không có chó nào đang bán."
+                response = " Hiện không có chó nào đang bán."
         
         return {
             'response': response,
@@ -647,7 +647,7 @@ class ChatbotService:
         
         return {
             'response': (
-                "🤔 Tôi chưa hiểu câu hỏi của bạn.\n\n"
+                " Tôi chưa hiểu câu hỏi của bạn.\n\n"
                 "Bạn có thể thử:\n"
                 "• \"Danh sách các giống chó\"\n"
                 "• \"Giá Golden Retriever\"\n"

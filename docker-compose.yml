@@ -1,0 +1,41 @@
+version: "3.9"
+
+services:
+
+  db:
+    image: mysql:8.0
+    container_name: catdog_mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: catdog_db
+      MYSQL_USER: catdog_user
+      MYSQL_PASSWORD: Fenris@218
+      MYSQL_ROOT_PASSWORD: Fenris@218
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
+
+  web:
+    build: .
+    container_name: catdog_web
+    restart: always
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+    environment:
+      DB_NAME: catdog_db
+      DB_USER: catdog_user
+      DB_PASSWORD: Fenris@218
+      DB_HOST: db
+      DB_PORT: 3306
+    command: >
+      sh -c "python manage.py migrate &&
+             gunicorn catdog_project.wsgi:application --bind 0.0.0.0:8000"
+
+volumes:
+  mysql_data:

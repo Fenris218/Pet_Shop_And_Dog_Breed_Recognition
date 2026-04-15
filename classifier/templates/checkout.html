@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load currency_filters %}
 
 {% block title %}Thanh Toán - DogShop{% endblock %}
 
@@ -73,13 +74,13 @@
             <div class="font-semibold text-slate-900 text-sm truncate">{{ item.dog.name }}</div>
             <div class="text-xs text-amber-600">{{ item.dog.breed.name }}</div>
           </div>
-          <div class="text-sm font-bold text-slate-700 shrink-0">{{ item.dog.price|floatformat:0 }} ₫</div>
+          <div class="text-sm font-bold text-slate-700 shrink-0">{{ item.dog.price|vnd_format }} ₫</div>
         </div>
         {% endfor %}
       </div>
       <div class="border-t border-slate-100 pt-4 flex justify-between">
         <span class="font-bold text-slate-900">Tổng Cộng</span>
-        <span class="text-xl font-extrabold text-amber-600">{{ total_price|floatformat:0 }} ₫</span>
+        <span class="text-xl font-extrabold text-amber-600">{{ total_price|vnd_format }} ₫</span>
       </div>
     </div>
   </div>

@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load currency_filters %}
 
 {% block title %}Lịch Sử Đơn Hàng - DogShop{% endblock %}
 
@@ -46,7 +47,7 @@
               {{ order.get_status_display }}
             </span>
           </td>
-          <td class="px-6 py-4 text-right font-extrabold text-amber-600">{{ order.total_price|floatformat:0 }} ₫</td>
+          <td class="px-6 py-4 text-right font-extrabold text-amber-600">{{ order.total_price|vnd_format }} ₫</td>
           <td class="px-6 py-4 text-center">
             <a href="{% url 'order_detail' order.id %}" class="inline-flex items-center gap-1.5 text-xs font-semibold text-amber-600 hover:text-amber-700 bg-amber-50 hover:bg-amber-100 px-3 py-1.5 rounded-xl transition">
               <i class="fa-solid fa-eye"></i> Xem
