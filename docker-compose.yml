@@ -22,7 +22,7 @@ services:
     container_name: catdog_web
     restart: always
     ports:
-      - "8000:8000"
+      - "6969:8000"
     volumes:
       - .:/app
     depends_on:
