@@ -9,6 +9,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
 from django.contrib.auth.models import User
 from django.db.models import Q
 from .forms import ImageUploadForm
@@ -431,14 +432,18 @@ def order_detail_view(request, order_id):
 
 def login_view(request):
     if request.method == "POST":
-        username = request.POST.get("username")
-        password = request.POST.get("password")
+        # Trim whitespace
+        username = request.POST.get("username", "").strip().lower()
+        password = request.POST.get("password", "").strip()
+        
         user = authenticate(request, username=username, password=password)
         if user:
             login(request, user)
             return redirect("home")
         else:
-            return render(request, "login.html", {"error": "Sai tài khoản hoặc mật khẩu"})
+            return render(request, "login.html", {
+                "error": "Sai tài khoản hoặc mật khẩu"
+            })
     return render(request, "login.html")
 
 def logout_view(request):
@@ -550,36 +555,57 @@ def breed_detection_result_view(request, job_id):
 
 def signup_view(request):
     if request.method == "POST":
-        username = request.POST.get("username")
-        email = request.POST.get("email")
-        password = request.POST.get("password")
-        confirm_password = request.POST.get("confirm_password")
+        # Trim whitespace từ tất cả input
+        username = request.POST.get("username", "").strip().lower()
+        email = request.POST.get("email", "").strip().lower()
+        password = request.POST.get("password", "").strip()
+        confirm_password = request.POST.get("confirm_password", "").strip()
 
-        # validate cơ bản
+        # Validate: nhập đầy đủ thông tin
         if not username or not password or not confirm_password:
             return render(request, "signup.html", {
                 "error": "Vui lòng nhập đầy đủ thông tin"
             })
 
+        # Validate: độ dài username (min 3 ký tự)
+        if len(username) < 3:
+            return render(request, "signup.html", {
+                "error": "Tên đăng nhập phải có ít nhất 3 ký tự"
+            })
+
+        # Validate: độ dài password (min 6 ký tự)
+        if len(password) < 6:
+            return render(request, "signup.html", {
+                "error": "Mật khẩu phải có ít nhất 6 ký tự"
+            })
+
+        # Validate: mật khẩu xác nhận khớp
         if password != confirm_password:
             return render(request, "signup.html", {
                 "error": "Mật khẩu xác nhận không khớp"
             })
 
+        # Validate: username chưa tồn tại
         if User.objects.filter(username=username).exists():
             return render(request, "signup.html", {
-                "error": "Username đã tồn tại"
+                "error": "Tên đăng nhập đã tồn tại"
             })
 
-        # tạo user
+        # Validate: email chưa tồn tại (nếu nhập email)
+        if email and User.objects.filter(email=email).exists():
+            return render(request, "signup.html", {
+                "error": "Email đã được đăng ký"
+            })
+
+        # Tạo user
         user = User.objects.create_user(
             username=username,
-            email=email,
+            email=email if email else "",
             password=password
         )
 
-        # auto login sau khi đăng ký
-        login(request, user)
-        return redirect("home")
+        # Gửi thông báo thành công và redirect đến login
+        messages.success(request, "Đăng ký thành công! Vui lòng đăng nhập.")
+        return redirect("login")
 
     return render(request, "signup.html")
