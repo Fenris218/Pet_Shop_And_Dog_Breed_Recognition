@@ -1,4 +1,4 @@
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, post_migrate
 from django.dispatch import receiver
 from django.contrib.auth.models import User
 from django.apps import apps
@@ -33,6 +33,14 @@ def populate_dog_breeds():
                 )
     except Exception as e:
         print(f"Lỗi khi tạo giống chó: {e}")
+
+
+# Gọi populate_dog_breeds() sau khi migrate hoàn tất, không phải khi app khởi động
+@receiver(post_migrate)
+def populate_after_migrate(sender, **kwargs):
+    """Populate dog breeds sau migration"""
+    if sender.name == 'classifier':
+        populate_dog_breeds()
 
 
 @receiver(post_save, sender=User)

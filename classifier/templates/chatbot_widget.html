@@ -310,7 +310,7 @@
       </div>
       <div class="chatbot-header-info">
         <h3>Trợ Lý DogShop</h3>
-        <p>🟢 Sẵn sàng hỗ trợ bạn</p>
+        <p> Sẵn sàng hỗ trợ bạn</p>
       </div>
       <button class="chatbot-header-close" id="chatbot-close" aria-label="Đóng chatbot">
         <i class="fa-solid fa-times"></i>
@@ -320,7 +320,7 @@
     <!-- Messages -->
     <div class="chatbot-messages" id="chatbot-messages">
       <div class="chatbot-message bot">
-        🐕 Xin chào! Tôi là trợ lý ảo của DogShop.
+         Xin chào! Tôi là trợ lý ảo của DogShop.
 
 Tôi có thể giúp bạn:
 • Xem danh sách chó đang bán
@@ -334,9 +334,9 @@ Hãy hỏi tôi bất cứ điều gì!
 
     <!-- Quick Actions -->
     <div class="chatbot-quick-actions">
-      <button class="quick-action-btn" data-message="Chó nào đang bán?">🐕 Xem chó bán</button>
-      <button class="quick-action-btn" data-message="Danh sách các giống chó">📋 Giống chó</button>
-      <button class="quick-action-btn" data-message="Giá chó">💰 Giá cả</button>
+      <button class="quick-action-btn" data-message="Chó nào đang bán?"> Xem chó bán</button>
+      <button class="quick-action-btn" data-message="Danh sách các giống chó"> Giống chó</button>
+      <button class="quick-action-btn" data-message="Giá chó"> Giá cả</button>
       <button class="quick-action-btn" data-message="help">❓ Trợ giúp</button>
     </div>
 
@@ -451,11 +451,11 @@ Hãy hỏi tôi bất cứ điều gì!
       if (data.success) {
         addMessage(data.response);
       } else {
-        addMessage('❌ Có lỗi xảy ra. Vui lòng thử lại!');
+        addMessage(' Có lỗi xảy ra. Vui lòng thử lại!');
       }
     } catch (error) {
       hideTyping();
-      addMessage('❌ Không thể kết nối. Vui lòng kiểm tra kết nối mạng!');
+      addMessage(' Không thể kết nối. Vui lòng kiểm tra kết nối mạng!');
       console.error('Chatbot error:', error);
     }
 

@@ -7,6 +7,3 @@ class ClassifierConfig(AppConfig):
 
     def ready(self):
         import classifier.signals
-        from classifier.signals import populate_dog_breeds
-        # Tạo các giống chó mặc định
-        populate_dog_breeds()
